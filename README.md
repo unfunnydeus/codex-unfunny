@@ -1,7 +1,8 @@
 # codex-unfunny
 
-A minimal Go CLI that prints **UNFUNNY** in a violet → blue → cyan terminal
-gradient. Built with the Go standard library, with no third-party dependencies.
+Минималистичная консольная утилита на Go, которая выводит **UNFUNNY** с цветовым
+градиентом: фиолетовый → синий → голубой. Использует только стандартную библиотеку
+Go, без сторонних зависимостей.
 
 ```text
   █   █  █   █  █████  █   █  █   █  █   █  █   █
@@ -11,34 +12,37 @@ gradient. Built with the Go standard library, with no third-party dependencies.
    ███   █   █  █       ███   █   █  █   █    █
 ```
 
-The preview above is plain text; the default terminal output is colored.
+Выше показан бесцветный пример. По умолчанию в терминале надпись цветная.
 
-## Features
+## Возможности
 
-- A compact, five-row Unicode banner with a horizontal ANSI true-color gradient.
-- Explicit `--no-color` and non-empty `NO_COLOR` environment variable support.
-- Plain output when `TERM=dumb`.
-- macOS, Linux, and Windows support; Windows console colors are enabled when
-  available, with a plain-text fallback otherwise.
-- No network access, configuration files, or external dependencies at runtime.
+- Компактная надпись из пяти строк символов Unicode с горизонтальным
+  ANSI-градиентом в режиме True Color (24-битный цвет).
+- Отключение цветов через `--no-color` или непустую переменную окружения `NO_COLOR`.
+- Бесцветный вывод при `TERM=dumb`.
+- Поддержка macOS, Linux и Windows. В Windows программа включает цветной вывод,
+  если консоль его поддерживает; иначе выводит бесцветную надпись.
+- Во время работы не нужны сеть, конфигурационные файлы или внешние зависимости.
 
-For the intended appearance, use a dark terminal with true-color support,
-a monospace font containing `█`, and at least 49 columns. The banner has a fixed
-width and does not resize. Color is enabled by default on macOS and Linux,
-including redirected output; use `--no-color` when saving plain text.
+Для задуманного оформления используйте тёмный терминал с поддержкой True Color,
+моноширинный шрифт с символом `█` и окно шириной не менее 49 колонок. Ширина баннера
+фиксированная: он не подстраивается под размер окна. На macOS и Linux цвета по
+умолчанию включены даже при перенаправлении вывода в файл. Для сохранения обычного
+текста используйте `--no-color`.
 
-## Install
+## Установка
 
-Requires Go 1.22 or newer:
+Требуется Go версии 1.22 или новее:
 
 ```sh
 go install github.com/unfunnydeus/codex-unfunny@v0.1.0
 ```
 
-Go places the executable in `GOBIN`, or in `$(go env GOPATH)/bin` when `GOBIN`
-is unset. Add that directory to your `PATH` to run it by name.
+Go сохраняет исполняемый файл в каталог `GOBIN`, а если эта переменная не задана —
+в `$(go env GOPATH)/bin`. Добавьте этот каталог в `PATH`, чтобы запускать программу
+по имени из любой папки.
 
-## Usage
+## Использование
 
 ```sh
 codex-unfunny
@@ -47,33 +51,34 @@ codex-unfunny --help
 codex-unfunny --version
 ```
 
-| Argument | Effect |
+| Аргумент | Действие |
 | --- | --- |
-| `--no-color` | Print the banner without ANSI escape sequences. |
-| `--help` | Print usage information. |
-| `--version` | Print `codex-unfunny 0.1.0`. |
+| `--no-color` | Выводит надпись без управляющих ANSI-последовательностей цвета. |
+| `--help` | Показывает справку по запуску. |
+| `--version` | Выводит `codex-unfunny 0.1.0`. |
 
-No positional arguments are accepted. Invalid arguments return exit code 2;
-output failures return 1; successful invocations return 0. When both `--help`
-and `--version` are supplied, help takes precedence.
+Позиционные аргументы, то есть отдельные значения без флагов, не принимаются.
+При неверных аргументах программа возвращает код завершения 2, при ошибке записи
+вывода — 1, при успешном запуске — 0. Если одновременно переданы `--help` и
+`--version`, программа показывает справку.
 
-Disable colors with the environment on macOS or Linux:
+Отключение цветов через переменную окружения на macOS или Linux:
 
 ```sh
 NO_COLOR=1 codex-unfunny
 ```
 
-In Windows PowerShell:
+В Windows PowerShell:
 
 ```powershell
 $env:NO_COLOR = '1'
 codex-unfunny
 ```
 
-Any non-empty `NO_COLOR` value disables color, including `0`. An empty value
-does not disable color.
+Любое непустое значение `NO_COLOR` отключает цвета, даже `0`. Пустое значение
+цвета не отключает.
 
-## Build from source
+## Сборка из исходников
 
 ```sh
 git clone https://github.com/unfunnydeus/codex-unfunny.git
@@ -82,10 +87,11 @@ go build -o codex-unfunny .
 ./codex-unfunny
 ```
 
-On Windows, build with `go build -o codex-unfunny.exe .` and run
-`.\codex-unfunny.exe`. During development, `go run .` works on all three platforms.
+В Windows используйте `go build -o codex-unfunny.exe .`, а затем
+`.\codex-unfunny.exe`. Во время разработки на всех трёх платформах можно запускать
+программу командой `go run .`.
 
-## Development and testing
+## Разработка и тестирование
 
 ```sh
 go fmt ./...
@@ -94,51 +100,91 @@ go vet ./...
 go build ./...
 ```
 
-Tests cover the exact banner layout, gradient stops, ANSI resets, command-line
-options, environment settings, invalid input, and output failures. GitHub Actions
-runs formatting checks, tests, vet, and builds on macOS, Linux, and Windows.
-The Windows console appearance still depends on the terminal and font in use.
+- `go fmt` приводит исходники к стандартному оформлению Go.
+- `go test` запускает автоматические тесты.
+- `go vet` ищет подозрительные конструкции и возможные ошибки в коде.
+- `go build` собирает исполняемый файл программы.
 
-## Project structure
+Тесты проверяют точную форму надписи, опорные цвета градиента, сброс ANSI-цвета,
+аргументы командной строки, переменные окружения, неверный ввод и ошибки записи
+вывода. Внешний вид в консоли Windows зависит также от терминала и шрифта.
+
+### GitHub Actions
+
+GitHub Actions выполняет автоматические задачи для репозитория. Наш сценарий
+проверок описан в `.github/workflows/ci.yml`. Он настроен на запуск при отправке
+коммитов на GitHub (`push`) и при событиях запроса на включение изменений
+(`pull_request`).
+
+Для macOS, Linux и Windows GitHub выделяет отдельные среды выполнения. В каждой
+среде сценарий получает исходники, устанавливает Go 1.22 и проверяет форматирование,
+запускает тесты, `go vet` и сборку. Проверка форматирования только сообщает о
+неправильно оформленных файлах, не исправляя их автоматически.
+
+Это называется CI — continuous integration, или непрерывная интеграция: изменения
+регулярно проверяются автоматически. Результаты и журналы доступны во вкладке
+[Actions](https://github.com/unfunnydeus/codex-unfunny/actions). Наличие сценария
+не означает, что конкретный запуск завершился успешно: его статус нужно смотреть
+отдельно. Этот сценарий проверяет проект, но не публикует выпуски.
+
+## Структура проекта
 
 ```text
 .
 ├── .github/
 │   └── workflows/
-│       └── ci.yml         # Cross-platform checks
+│       └── ci.yml
 ├── .gitignore
 ├── LICENSE
 ├── README.md
-├── ansi_unix.go          # ANSI support on non-Windows platforms
-├── ansi_windows.go       # Windows virtual terminal support
-├── banner.go             # Glyphs and gradient rendering
-├── banner_test.go        # Layout and gradient tests
+├── ansi_unix.go
+├── ansi_windows.go
+├── banner.go
+├── banner_test.go
 ├── go.mod
-├── main.go               # CLI options and process entry point
-└── main_test.go          # CLI, environment, and error tests
+├── main.go
+└── main_test.go
 ```
 
-One `main` package keeps the project easy to read. The renderer returns a string;
-the CLI writes it to a supplied writer, allowing tests without starting a process.
-Platform-specific files keep Windows console setup separate from rendering.
-There is no `go.sum` because the module has no external dependencies.
+| Файл | Назначение |
+| --- | --- |
+| `.github/workflows/ci.yml` | Инструкции для автоматических проверок на GitHub: когда запускаться, какие ОС использовать и какие команды выполнять. |
+| `.gitignore` | Список локальных файлов, которые Git не должен предлагать добавить: собранные программы, кэши и служебные файлы macOS. |
+| `LICENSE` | Полный текст лицензии MIT, определяющей условия использования и распространения проекта. |
+| `README.md` | Эта документация: описание, установка, запуск и устройство проекта. |
+| `ansi_unix.go` | Часть программы для платформ, отличных от Windows. Разрешает использовать ANSI без дополнительной настройки консоли. |
+| `ansi_windows.go` | Включает обработку ANSI-последовательностей в консоли Windows. Если это невозможно, выбирается бесцветный вывод. |
+| `banner.go` | Хранит рисунки букв, собирает слово UNFUNNY и вычисляет плавные переходы между цветами. |
+| `banner_test.go` | Проверяет форму надписи, цвета градиента и сброс цвета в конце каждой строки. |
+| `go.mod` | Задаёт имя Go-модуля и минимальную версию Go. Здесь также указывались бы внешние зависимости, если бы они были. |
+| `main.go` | Точка входа: читает аргументы и переменные окружения, выбирает вывод и возвращает код завершения. |
+| `main_test.go` | Проверяет флаги, управление цветом, обработку неверных аргументов и ошибок записи. |
 
-## AI Development Experiment
+Весь код находится в одном пакете `main`. Функция отрисовки возвращает строку,
+а обработчик командной строки записывает её в переданный поток вывода. Поэтому
+тесты могут проверять результат без запуска отдельного процесса.
 
-This project was created as an experiment in autonomous AI agents for software
-development.
+Go выбирает подходящий файл настройки консоли при сборке: Windows-код отделён от
+остальных платформ. Файлы с окончанием `_test.go` используются для тестов и не
+входят в обычный исполняемый файл. Файла `go.sum` нет, поскольку у модуля нет
+внешних зависимостей.
 
-**Unfunny ([@unfunnydeus](https://github.com/unfunnydeus))** originated the idea,
-defined the requirements, directed the experiment, and owns the project.
+## AI Development Experiment — эксперимент с ИИ-разработкой
 
-**OpenAI Codex (AI Coding Agent)** implemented the code, organized the project,
-prepared the documentation, and ran local tests and development checks using
-real filesystem and terminal tools. The code is AI-authored; it is not presented
-as code written manually by Unfunny.
+Проект создан в рамках эксперимента по изучению автономных ИИ-агентов в разработке
+программного обеспечения.
 
-The goal is to explore the capabilities of modern AI agents and their interaction
-with real development tools on a small, understandable project.
+**Unfunny ([@unfunnydeus](https://github.com/unfunnydeus))** предложил идею,
+сформулировал требования, руководил экспериментом и является владельцем проекта.
 
-## License
+**OpenAI Codex (AI Coding Agent)** реализовал код, организовал проект, подготовил
+документацию и выполнил локальные тесты и проверки с помощью реальных инструментов
+работы с файловой системой и терминалом. Код написан ИИ-агентом и не представлен
+как код, вручную написанный Unfunny.
+
+Цель эксперимента — изучить возможности современных ИИ-агентов и их взаимодействие
+с реальными инструментами разработки на небольшом и понятном проекте.
+
+## Лицензия
 
 [MIT](LICENSE) — Copyright (c) 2026 Unfunny (@unfunnydeus).
